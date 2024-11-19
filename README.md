@@ -1,0 +1,1 @@
+This repository contains folders and files that tackles various ways to operate with Database and implementing various higher-level abstarctions with code blocks scuh as the use of ODM

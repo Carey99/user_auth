@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+    <link rel="stylesheet" href="styles_h.css">
+</head>
+<body>
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#" onclick="closeNav()">Dashboard</a>
+        <a href="#profile" onclick="closeNav()">My profile</a>
+    </div>
+
+    <div id="main">
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+        <h1>Welcome</h1>
+    </div>
+    <div id="profile" style="display:none;">
+        <button class="openbtn" onclick="openNav()">&#9776;</button>
+        <div id="Logout">
+            <button type="submit" id="logout">sign out</button>
+        </div>
+        <div id="Delete" style="display:none;">
+            <button type="submit" id="delete">Delete Account</button>
+        </div>
+    </div>
+    <script src="home.js"></script>
+</body>
+</html>

@@ -1,8 +1,11 @@
 const express = require('express');
 const db_op = require('./mongooseInNode');
-const bodyParser =  require('body-parser');
-const bcrypt =  require('bcrypt');
+const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
 const path = require('path');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+
 require('dotenv').config();
 
 const app = express();
@@ -18,7 +21,51 @@ app.use((req, res, next) => {
     next();
 });
 
-app.post('/userCreation',  async(req, res) => {
+// Swagger configuration
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: '3.0.0',
+        info: {
+            title: 'User Management API',
+            version: '1.0.0',
+            description: 'API for creating, authenticating, and managing users',
+        },
+        servers: [
+            {
+                url: 'http://localhost:4000',
+                description: 'Development server',
+            },
+        ],
+    },
+    apis: ['./server.js'], // Path to the file containing Swagger comments
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
+/**
+ * @swagger
+ * /userCreation:
+ *   post:
+ *     summary: Create a new user
+ *     description: Creates a new user with a hashed password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User created successfully.
+ *       500:
+ *         description: Error occurred while creating the user.
+ */
+app.post('/userCreation', async (req, res) => {
     try {
         const { username, password } = req.body;
         console.log('Received data');
@@ -31,12 +78,39 @@ app.post('/userCreation',  async(req, res) => {
         await db.creatingUser({ username, password: hashed_password });
         console.log('User created successfully');
         res.status(201).json({ message: 'Ok! it was successful' });
-    } catch(err) {
+    } catch (err) {
         console.error(err.message);
         res.status(500).json({ message: 'Error occurred!!' });
     }
 });
 
+/**
+ * @swagger
+ * /:
+ *   post:
+ *     summary: User login
+ *     description: Authenticates a user with a username and password.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful.
+ *       401:
+ *         description: Invalid password.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal Server Error.
+ */
 app.post('/', async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -63,7 +137,29 @@ app.post('/', async (req, res) => {
     }
 });
 
-
+/**
+ * @swagger
+ * /deleteUser:
+ *   delete:
+ *     summary: Delete a user
+ *     description: Deletes a user based on the username.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User deleted successfully.
+ *       404:
+ *         description: No user with specified username found.
+ *       500:
+ *         description: Internal Server Error.
+ */
 app.delete('/deleteUser', async (req, res) => {
     try {
         const { username } = req.body;
@@ -82,10 +178,20 @@ app.delete('/deleteUser', async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /home:
+ *   get:
+ *     summary: Serve home page
+ *     description: Serves the static HTML file for the home page.
+ *     responses:
+ *       200:
+ *         description: HTML file served successfully.
+ */
 app.get('/home', (req, res) => {
-    res.sendFile(__dirname + '/home.html')
+    res.sendFile(__dirname + '/home.html');
 });
 
-app.listen(3000, () => {
-    console.log(`Server running at http://localhost:${3000}`);
+app.listen(4000, () => {
+    console.log(`Server running at http://localhost:${4000}`);
 });

@@ -6,7 +6,7 @@ document.getElementById('userform').addEventListener('submit', async (event) => 
 
     try {
 
-        const response  = await fetch('http://localhost:3000/userCreation', {
+        const response  = await fetch('http://localhost:4000/userCreation', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -35,7 +35,7 @@ document.getElementById('sign_in').addEventListener('click', async (event) => {
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('http://localhost:3000/', {
+        const response = await fetch('http://localhost:4000/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })

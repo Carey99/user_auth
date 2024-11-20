@@ -21,7 +21,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Swagger configuration
 const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
@@ -32,8 +31,10 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'http://localhost:4000',
-                description: 'Development server',
+                url: process.env.SERVER_URL || 'http://localhost:4000',
+                description: process.env.SERVER_URL
+                    ? 'Production server'
+                    : 'Development server',
             },
         ],
     },

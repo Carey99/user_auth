@@ -14,6 +14,7 @@ const db = new db_op();
 
 //middlewares
 app.use(express.static('public'));
+app.use(express.json());
 app.use(bodyParser.json());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // Adjust for specific origins if needed
@@ -192,25 +193,5 @@ app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname, 'home.html'));
 });
 
-/**
- * @swagger
- * /test:
- *   get:
- *     summary: Test endpoint
- *     responses:
- *       200:
- *         description: Success
- */
-app.get('/test', (req, res) => res.send('Swagger Test'));
-
-/**if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 4000;
-    app.listen(PORT, () => console.log(`Server running locally on http://localhost:${PORT}`));
-} else {
-    module.exports = serverless(app); // For production
-}**/
-
-if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 4000;
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-}
+module.exports = app;
+module.exports.handler = serverless(app);

@@ -1,5 +1,5 @@
 const express = require('express');
-const db_op = require('./mongooseInNode');
+const db_op = require('../mongooseInNode');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const path = require('path');
@@ -192,4 +192,9 @@ app.get('/home', (req, res) => {
     res.sendFile(__dirname + '/home.html');
 });
 
-module.exports = serverless(app); //Serverless comatibility handler
+if (process.env.NODE_ENV !== 'production') {
+    const PORT = process.env.PORT || 4000;
+    app.listen(PORT, () => console.log(`Server running locally on http://localhost:${PORT}`));
+} else {
+    module.exports = serverless(app); // For production
+}

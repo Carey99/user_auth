@@ -31,10 +31,8 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: process.env.SERVER_URL || 'http://localhost:4000',
-                description: process.env.SERVER_URL
-                    ? 'Production server'
-                    : 'Development server',
+                url: 'https://user-auth-blush.vercel.app', // Deployed URL
+                description: 'Production server',
             },
         ],
     },

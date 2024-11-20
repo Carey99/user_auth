@@ -14,7 +14,6 @@ const db = new db_op();
 
 //middlewares
 app.use(express.static('public'));
-app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // Adjust for specific origins if needed
@@ -37,7 +36,7 @@ const swaggerOptions = {
             },
         ],
     },
-    apis: ['./server.js'], // Path to the file containing Swagger comments
+    apis: [path.resolve(__dirname, './server.js')], // Path to the file containing Swagger comments
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
@@ -189,7 +188,7 @@ app.delete('/deleteUser', async (req, res) => {
  *         description: HTML file served successfully.
  */
 app.get('/home', (req, res) => {
-    res.sendFile(__dirname + '/home.html');
+    res.sendFile(path.join(__dirname, 'home.html'));
 });
 
 if (process.env.NODE_ENV !== 'production') {

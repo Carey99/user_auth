@@ -1,12 +1,11 @@
 const express = require('express');
-const db_op = require('../mongooseInNode');
+const db_op = require('./mongooseInNode');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const serverless = require('serverless-http');
-
 require('dotenv').config();
 
 const app = express();
@@ -14,7 +13,6 @@ const db = new db_op();
 
 //middlewares
 app.use(express.static('public'));
-app.use(express.json());
 app.use(bodyParser.json());
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*"); // Adjust for specific origins if needed
@@ -22,26 +20,6 @@ app.use((req, res, next) => {
     next();
 });
 
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'User Management API',
-            version: '1.0.0',
-            description: 'API for creating, authenticating, and managing users',
-        },
-        servers: [
-            {
-                url: 'https://user-auth-carey99-cery99s-projects.vercel.app/api', // Deployed URL
-                description: 'Production server',
-            },
-        ],
-    },
-    apis: [path.join(__dirname, 'server.js')], // Path to the file containing Swagger comments
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-console.log(swaggerDocs);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 /**
  * @swagger
@@ -66,7 +44,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
  *       500:
  *         description: Error occurred while creating the user.
  */
-app.post('/userCreation', async (req, res) => {
+app.post('/api/userCreation', async (req, res) => {
     try {
         const { username, password } = req.body;
         console.log('Received data');
@@ -112,7 +90,7 @@ app.post('/userCreation', async (req, res) => {
  *       500:
  *         description: Internal Server Error.
  */
-app.post('/', async (req, res) => {
+app.post('/api/login', async (req, res) => {
     try {
         const { username, password } = req.body;
 
@@ -161,7 +139,7 @@ app.post('/', async (req, res) => {
  *       500:
  *         description: Internal Server Error.
  */
-app.delete('/deleteUser', async (req, res) => {
+app.delete('/api/deleteUser', async (req, res) => {
     try {
         const { username } = req.body;
 

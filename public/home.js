@@ -7,7 +7,7 @@ document.getElementById('delete').addEventListener('click', async (event) => {
             return;
         }
 
-        const response = await fetch('http://localhost:3000/deleteUser', {
+        const response = await fetch('https://user-auth-blush.vercel.app/api/deleteUser', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

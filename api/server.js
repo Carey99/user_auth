@@ -32,7 +32,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: 'https://user-auth-carey99-cery99s-projects.vercel.app/', // Deployed URL
+                url: 'https://user-auth-carey99-cery99s-projects.vercel.app/api', // Deployed URL
                 description: 'Production server',
             },
         ],
